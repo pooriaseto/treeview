@@ -36,6 +36,9 @@ function TreeView({ data }) {
             item={item}
             info={info}
             handleExpandSubList={handleExpandSubList}
+            alldata={data}
+            expandSubList={expandSubList}
+            setexpandSubList={setexpandSubList}
           >
             {children.length > 0 ? (
               <List

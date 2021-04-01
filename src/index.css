@@ -5,4 +5,19 @@ body {
 
 ul {
   list-style: none;
+  position: relative;
+}
+
+ul ul::before {
+  content: "";
+  height: 100%;
+  width: 2px;
+  border-left: 1px dashed #1d1d1d;
+  position: absolute;
+  left: 7px;
+  top: 0;
+}
+
+ul > li{
+  padding: 6px 0;
 }

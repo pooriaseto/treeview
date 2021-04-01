@@ -8,18 +8,48 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 
-function App({ item, children, info, handleExpandSubList }) {
-  console.log();
+function App({
+  item,
+  children,
+  info,
+  handleExpandSubList,
+  alldata,
+  setexpandSubList,
+  expandSubList,
+}) {
+  const handleChildsChecked = (checkstatus,childs) => {
+
+    for (const child of childs) {
+      if (alldata.some((a) => a.parentId === child.id)) {
+        handleChildsChecked(
+          checkstatus,
+          alldata.filter((a) => a.parentId === child.id)
+        );
+      }
+
+      setexpandSubList((prevstate) => {
+        return {
+          ...prevstate,
+          [child.id]: {
+            expand: expandSubList[child.id].expand,
+            checked: checkstatus,
+          },
+        };
+      });
+    }
+
+  };
+
   return (
     <li>
-      {children && info.expand === false ? (
+      {children && info.expand == false ? (
         <FontAwesomeIcon
           onClick={() => {
             handleExpandSubList(item.id, !info.expand, info.checked);
           }}
           icon={faPlus}
         />
-      ) : children && info.expand === true ? (
+      ) : children && info.expand == true ? (
         <FontAwesomeIcon
           onClick={() => {
             handleExpandSubList(item.id, !info.expand, info.checked);
@@ -32,9 +62,15 @@ function App({ item, children, info, handleExpandSubList }) {
         type="checkbox"
         checked={info.checked}
         onChange={(e) => {
-          handleExpandSubList(item.id, info.expand, e.target.checked);
+          let checkstatus = e.target.checked;
+          handleExpandSubList(item.id, info.expand, checkstatus);
+
+          let parentId = item.id;
+          let childs = alldata.filter((a) => a.parentId === parentId);
+          handleChildsChecked(checkstatus,childs);
         }}
       />
+
       {item.type === "folder" ? (
         <FontAwesomeIcon icon={faFolder} />
       ) : item.type === "zip" ? (

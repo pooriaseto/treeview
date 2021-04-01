@@ -20,7 +20,10 @@ function List({
               key={key}
               item={item}
               info={info}
+              alldata={alldata}
+              expandSubList={expandSubList}
               handleExpandSubList={handleExpandSubList}
+              setexpandSubList={setexpandSubList}
             >
               {children.length > 0 ? (
                 <List
